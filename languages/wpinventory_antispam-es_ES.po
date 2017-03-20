@@ -1,0 +1,220 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WP Inventory Anti-Spam Add On\n"
+"POT-Creation-Date: 2017-03-19 17:06-0600\n"
+"PO-Revision-Date: 2017-03-19 17:07-0600\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-WPHeader: wpinventory_antispam.php\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: wpinventory_antispam.class.php:104
+msgid "No reCAPTCHA"
+msgstr "Sin reCAPTCHA"
+
+#: wpinventory_antispam.class.php:105
+msgid "Invisible reCAPTCHA"
+msgstr "ReCAPTCHA invisible"
+
+#: wpinventory_antispam.class.php:106
+msgid "Visible reCAPTCHA"
+msgstr "ReCAPTCHA visible"
+
+#: wpinventory_antispam.class.php:111
+msgid "No Limit"
+msgstr "Sin límite"
+
+#: wpinventory_antispam.class.php:113
+msgid "Anti-Spam"
+msgstr "Anti-Spam"
+
+#: wpinventory_antispam.class.php:115
+msgid "Verify Email Address"
+msgstr "Confirme Su Dirección de Correo Electrónico"
+
+#: wpinventory_antispam.class.php:118
+msgid ""
+"Recommended: \"Yes\".<br>Checks that the email address provided appears to "
+"be a legitimate address."
+msgstr ""
+"Recomienda: \"sí\".<br>Comprueba que la dirección de correo electrónico "
+"proporcionada parece ser una dirección legítima."
+
+#: wpinventory_antispam.class.php:122
+msgid "Use NONCE"
+msgstr "Uso NONCE"
+
+#: wpinventory_antispam.class.php:125
+msgid ""
+"Recommended: \"Yes\".<br>Sets a secret code on the form that would be "
+"difficult for spammers to guess."
+msgstr ""
+"Recomienda: \"sí\".<br>Establece un código secreto en la forma que sería "
+"difícil para los spammers supongo."
+
+#: wpinventory_antispam.class.php:129
+msgid "Use Honeypot"
+msgstr "Honeypot"
+
+#: wpinventory_antispam.class.php:132
+msgid ""
+"Recommended: \"Yes\".<br>Honeypots are a technique that detect spam-bots by "
+"tricking them into completing form fields that should not be completed."
+msgstr ""
+"Recomienda: \"sí\".<br>Honeypots son una técnica que detecta spam-bots "
+"engañando en completar los campos del formulario que no deben ser "
+"completados."
+
+#: wpinventory_antispam.class.php:136
+msgid "Use reCAPTCHA"
+msgstr "Usar reCaptcha"
+
+#: wpinventory_antispam.class.php:139
+#, php-format
+msgid ""
+"Recommended: \"No\", or \"Invisible\".<br>Utilizes %sGoogle reCAPTCHA%s "
+"technology.  You will need to %sregister for a reCAPTCHA key%s and enter it "
+"below."
+msgstr ""
+"Recomienda: \"No\", o \"Invisible\".<br>Utiliza tecnología de reCAPTCHA %s "
+"de %sGoogle.  Se necesitan %sregister para una clave de reCAPTCHA %s y "
+"entrar más abajo."
+
+#: wpinventory_antispam.class.php:143
+msgid "reCAPTCHA Site Key"
+msgstr "Clave del Sitio reCAPTCHA"
+
+#: wpinventory_antispam.class.php:146
+#, php-format
+msgid ""
+"Only required if using %s reCAPTCHA %s.  %s How to get your site keys.%s"
+msgstr ""
+"Sólo se requiere si se utiliza reCAPTCHA %s %s.  %s cómo obtener su sitio "
+"web keys.%s"
+
+#: wpinventory_antispam.class.php:150
+msgid "reCAPTCHA Secret Key"
+msgstr "Clave secreta de reCAPTCHA"
+
+#: wpinventory_antispam.class.php:153
+#, php-format
+msgid "Only required if using %s reCAPTCHA %s.  %s How to get your keys.%s"
+msgstr ""
+"Sólo se requiere si se utiliza reCAPTCHA %s %s.  %s cómo obtener su sitio "
+"web keys.%s"
+
+#: wpinventory_antispam.class.php:157
+msgid "Maximum Links in Message"
+msgstr "Máximo enlaces en el mensaje"
+
+#: wpinventory_antispam.class.php:160
+msgid ""
+"Recommended: 0 or 1.<br>Links in a message are typical of spam. Keep in mind "
+"that some users may want to provide links in their message to you.  Set this "
+"to be the maximum number of links that will be permitted."
+msgstr ""
+"Recomienda: 0 o 1.<br>Enlaces en un mensaje son típicos del spam. Tenga en "
+"cuenta que algunos usuarios pueden proveer enlaces en sus mensajes a usted.  "
+"Este es el número máximo de enlaces que le permitirá establecer."
+
+#: wpinventory_antispam.class.php:164
+msgid "Maximum Domains in Message"
+msgstr "Máximo dominios en mensaje"
+
+#: wpinventory_antispam.class.php:167
+msgid ""
+"Recommended: 2 to 4.<br>Domain names (for example, www.google.com) in a "
+"message are also typical of spam.  All email addresses contain a domain "
+"name, since all e-mail addresses contain a domain name."
+"<br><strong>Important: This should be greater than the \"Maximum Links\" "
+"setting above.</strong>"
+msgstr ""
+"Se recomienda: 2 a 4.<br>Nombres de dominio (por ejemplo, www.google.com) en "
+"un mensaje también son típicos del spam.  Todas las direcciones de correo "
+"electrónico contienen un nombre de dominio, puesto que todas las direcciones "
+"de correo electrónico contienen un nombre de dominio.<br><strong>Importante: "
+"Esto debe ser mayor que el valor de \"Máximo enlaces\" anterior.</strong>"
+
+#: wpinventory_antispam.class.php:221
+msgid ""
+"The reCAPTCHA key has not been configured, therefore CAPTCHA cannot work."
+msgstr ""
+"La clave de reCAPTCHA no se ha configurado, por lo tanto no puede trabajar "
+"el CAPTCHA."
+
+#: wpinventory_antispam.class.php:290
+msgid "Security Error.  Please try again."
+msgstr "Error. Por favor, vuelva a intentarlo."
+
+#: wpinventory_antispam.class.php:307
+msgid "Email address is not valid."
+msgstr "La dirección de correo electrónico no es válida"
+
+#: wpinventory_antispam.class.php:323
+msgid ""
+"This appears to be spam.  Please contact us if you are receiving this "
+"message."
+msgstr ""
+"Esto parece spam.  Póngase en contacto con nosotros si usted está recibiendo "
+"este mensaje."
+
+#: wpinventory_antispam.class.php:341
+msgid "Please complete the \"I am not a robot\" challenge."
+msgstr "Por favor, completa el desafío de \"No soy un robot\"."
+
+#: wpinventory_antispam.class.php:351
+msgid "The \"I am not not a robot\" challenge was not completed properly."
+msgstr "El reto de \"No no soy un robot\" no se completó correctamente."
+
+#: wpinventory_antispam.class.php:375
+#, php-format
+msgid "You may only include up to %d links in your message."
+msgstr "Sólo puede incluir hasta enlaces de %d en su mensaje."
+
+#: wpinventory_antispam.class.php:399
+#, php-format
+msgid "You may only include up to %d domain names in your message."
+msgstr "Sólo puede incluir hasta %d los nombres de dominio en su mensaje."
+
+#. Plugin Name of the plugin/theme
+msgid "WP Inventory Anti-Spam Add On"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://www.wpinventory.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Provides anti-spam options to WP Inventory reserve form"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WP Inventory Manager"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://www.wpinventory.com/"
+msgstr ""
+
+#~ msgid "Only required if using %sreCAPTCHA%s.  %sHow to get your keys.%s"
+#~ msgstr ""
+#~ "Sólo se requiere si se utiliza %sreCAPTCHA %s.  % Programa para obtener "
+#~ "su keys.%s"
+
+#~ msgid ""
+#~ "Only required if using %sreCAPTCHA%s.  %sHow to get your site keys.%s"
+#~ msgstr ""
+#~ "Sólo se requiere si se utiliza %sreCAPTCHA %s.  % Mostrar para obtener su "
+#~ "sitio web keys.%s"
