@@ -52,17 +52,8 @@ Your votes really make a difference! Thanks.
 
 == Frequently Asked Questions ==
 
-= Q. Why won't breadcrumbs show up? =
-If you can't get the breadcrumbs to show up, please get support from the breadcrumb plugin author.
-We cannot provide support for their plugins.
-Also, keep in mind this only supports Yoast SEO Breadcrumbs and NavXT Breadcrumbs.  If you'd like
-to see support for another breadcrumb plugin, please contact support and let us know!
-
-= Q. Why can't I pick the field I want to show up? =
-If you don't see the field that you want to appear in the list, then visit the "Display Settings",
-and be sure that the field you want is set to display in the "Detail".
-If you are using the Advanced Inventory Manager, currently the system does not allow you to pick fields
-for each type.  If this would be helpful to you, let us know at support!
+= Q. How do I get a RECAPTCHA key? =
+Visit Google's RECAPTCHA project here: https://www.google.com/recaptcha/admin
 
 == Changelog ==
 

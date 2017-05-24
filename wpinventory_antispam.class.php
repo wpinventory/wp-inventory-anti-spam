@@ -42,10 +42,18 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 
 	private static $reserve_args;
 
+	private static $item_key = 'anti_spam';
+
 	/**
 	 * Set everything up.
 	 */
 	public static function initialize() {
+		add_filter( 'wpim_add_ons_list', array( __CLASS__, 'wpim_add_ons_list' ) );
+
+		if ( ! parent::validate( self::$item_key ) ) {
+			return;
+		}
+
 		add_filter( 'wpim_default_config', [ __CLASS__, 'wpim_default_config' ] );
 		add_action( 'wpim_edit_settings_reserve', [ __CLASS__, 'wpim_edit_settings' ] );
 		add_filter( 'wpim_reserve_config', [ __CLASS__, 'wpim_reserve_config' ] );
@@ -82,6 +90,7 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 		$default['antispam_recaptcha_secret_key']   = '';
 		$default['antispam_max_links_in_message']   = '0';
 		$default['antispam_max_domains_in_message'] = '2';
+		$default['license_key_' . self::$item_key] = '';
 
 		return $default;
 	}
@@ -400,6 +409,29 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 		}
 
 		return '';
+	}
+
+
+	/**
+	 * Filter for add-ons to indicate that Advanced User is installed
+	 *
+	 * @param array $add_ons
+	 *
+	 * @return false|array
+	 */
+	public static function wpim_add_ons_list( $add_ons ) {
+		if ( ! $add_ons ) {
+			return FALSE;
+		}
+
+		foreach ( $add_ons AS $index => $add_on ) {
+			if ( stripos( $add_on->title, 'anti-spam' ) !== FALSE ) {
+				$add_ons[ $index ]->installed = TRUE;
+				self::$item_key    = $add_on->key;
+			}
+		}
+
+		return $add_ons;
 	}
 }
 
