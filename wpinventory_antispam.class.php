@@ -241,7 +241,6 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
               function submitReserveForm( el ) {
                 var $form = jQuery( 'form.wpinventory_reserve' );
                 if ( validate_form( $form ) ) {
-                  console.log( "SUBMIT", $form );
                   $form.submit();
                 } else {
                   grecaptcha.reset();
