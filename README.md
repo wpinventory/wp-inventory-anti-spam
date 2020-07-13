@@ -1,1 +1,1 @@
-# WPIM-breadcrumb
+# WPIM-anti-spam
