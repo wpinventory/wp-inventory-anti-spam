@@ -50,9 +50,9 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	public static function initialize() {
 		add_filter( 'wpim_add_ons_list', array( __CLASS__, 'wpim_add_ons_list' ) );
 
-		if ( ! parent::validate( self::$item_key ) ) {
-			return;
-		}
+//		if ( ! parent::validate( self::$item_key ) ) {
+//			return;
+//		}
 
 		add_filter( 'wpim_default_config', [ __CLASS__, 'wpim_default_config' ] );
 		add_action( 'wpim_edit_settings_reserve', [ __CLASS__, 'wpim_edit_settings' ] );
