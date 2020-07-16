@@ -34,9 +34,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 function activate_wpim_antispam() {
 	$min_version = '1.4.6';
-	if ( ! WPIMCore::check_version( $min_version, 'Inventory Anti-Spam' ) ) {
-		return;
-	}
+//	if ( ! WPIMCore::check_version( $min_version, 'Inventory Anti-Spam' ) ) {
+//		return;
+//	}
 
 	add_action( 'wpim_core_loaded', 'launch_wpim_antispam' );
 }
