@@ -49,16 +49,11 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	 */
 	public static function initialize() {
 		add_filter( 'wpim_add_ons_list', array( __CLASS__, 'wpim_add_ons_list' ) );
-
-//		if ( ! parent::validate( self::$item_key ) ) {
-//			return;
-//		}
-
 		add_filter( 'wpim_default_config', [ __CLASS__, 'wpim_default_config' ] );
 		add_action( 'wpim_edit_settings_reserve', [ __CLASS__, 'wpim_edit_settings' ] );
 		add_filter( 'wpim_reserve_config', [ __CLASS__, 'wpim_reserve_config' ] );
 		add_action( 'wpim_reserve_form', [ __CLASS__, 'wpim_reserve_form' ] );
-		add_action( 'wpim_checkout_form', [ __CLASS__, 'wpim_reserve_form' ] );
+		add_action( 'wpim_checkout_form_end', [ __CLASS__, 'wpim_reserve_form' ] );
 		add_filter( 'wpim_reserve_form_errors', [ __CLASS__, 'wpim_reserve_form_errors' ] );
 		add_action( 'init', [ __CLASS__, 'init' ] );
 	}
@@ -82,15 +77,15 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	 * @return array
 	 */
 	public static function wpim_default_config( $default ) {
-		$default['antispam_verify_email']           = 1;
-		$default['antispam_nonce']                  = 1;
-		$default['antispam_honeypot']               = 1;
-		$default['antispam_recaptcha']              = 0;
-		$default['antispam_recaptcha_site_key']     = '';
-		$default['antispam_recaptcha_secret_key']   = '';
-		$default['antispam_max_links_in_message']   = '0';
-		$default['antispam_max_domains_in_message'] = '2';
-		$default['license_key_' . self::$item_key] = '';
+		$default['antispam_verify_email']            = 1;
+		$default['antispam_nonce']                   = 1;
+		$default['antispam_honeypot']                = 1;
+		$default['antispam_recaptcha']               = 0;
+		$default['antispam_recaptcha_site_key']      = '';
+		$default['antispam_recaptcha_secret_key']    = '';
+		$default['antispam_max_links_in_message']    = '0';
+		$default['antispam_max_domains_in_message']  = '2';
+		$default[ 'license_key_' . self::$item_key ] = '';
 
 		return $default;
 	}
@@ -426,7 +421,7 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 		foreach ( $add_ons AS $index => $add_on ) {
 			if ( stripos( $add_on->title, 'anti-spam' ) !== FALSE ) {
 				$add_ons[ $index ]->installed = TRUE;
-				self::$item_key    = $add_on->key;
+				self::$item_key               = $add_on->key;
 			}
 		}
 
