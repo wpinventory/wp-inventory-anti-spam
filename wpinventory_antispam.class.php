@@ -45,6 +45,13 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	private static $item_key = 'anti_spam';
 
 	/**
+	 * The anti-spam result for this request, once checked.
+	 *
+	 * @var null|string
+	 */
+	private static $form_errors = NULL;
+
+	/**
 	 * Set everything up.
 	 */
 	public static function initialize() {
@@ -221,7 +228,7 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 
 		$recaptcha_site_key = self::$config->get( 'antispam_recaptcha_site_key' );
 
-		if ( ! $recaptcha_site_key ) {
+		if ( ! self::recaptcha_configured() ) {
 			self::_e( 'The reCAPTCHA key has not been configured, therefore CAPTCHA cannot work.' );
 
 			return;
@@ -258,15 +265,22 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	 * @return string
 	 */
 	public static function wpim_reserve_form_errors( $form_errors ) {
-		$errors   = [];
-		$errors[] = self::nonce_validate();
-		$errors[] = self::email_validate();
-		$errors[] = self::honeypot_validate();
-		$errors[] = self::recaptcha_validate();
-		$errors[] = self::max_links_validate();
-		$errors[] = self::max_domains_validate();
+		// Reserve Cart applies this filter once for the form and again for every cart item.
+		// The checks are about the submitted form, so run them once: a reCAPTCHA token can only
+		// be verified once, and Google answers "timeout-or-duplicate" to the second attempt.
+		if ( NULL === self::$form_errors ) {
+			$errors   = [];
+			$errors[] = self::nonce_validate();
+			$errors[] = self::email_validate();
+			$errors[] = self::honeypot_validate();
+			$errors[] = self::recaptcha_validate();
+			$errors[] = self::max_links_validate();
+			$errors[] = self::max_domains_validate();
 
-		$errors = implode( '<br>', array_filter( $errors ) );
+			self::$form_errors = implode( '<br>', array_filter( $errors ) );
+		}
+
+		$errors = self::$form_errors;
 
 		if ( $form_errors && $errors ) {
 			$form_errors .= '<br>';
@@ -304,7 +318,18 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return '';
 		}
 
-		$email = self::request( 'wpinventory_reserve_email' );
+		// Nothing to check when the reserve form does not show an Email field
+		$display_email = ( is_array( self::$reserve_args ) && isset( self::$reserve_args['display_email'] ) ) ? self::$reserve_args['display_email'] : self::$config->get( 'reserve_require_email' );
+		if ( ! (int) $display_email ) {
+			return '';
+		}
+
+		$email = trim( (string) self::request( 'wpinventory_reserve_email' ) );
+
+		// An optional Email field left blank is fine. When it is required, the reserve form reports it.
+		if ( '' === $email ) {
+			return '';
+		}
 
 		if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
 			return self::__( 'Email address is not valid.' );
@@ -337,6 +362,11 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return '';
 		}
 
+		// Without both keys the challenge is not shown (see recaptcha_field()), so there is nothing to verify.
+		if ( ! self::recaptcha_configured() ) {
+			return '';
+		}
+
 		$secret_key = self::$config->get( 'antispam_recaptcha_secret_key' );
 		$response   = self::request( 'g-recaptcha-response' );
 
@@ -344,17 +374,32 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return self::__( 'Please complete the "I am not a robot" challenge.' );
 		}
 
-		$ip = $_SERVER['REMOTE_ADDR'];
+		// Use the WordPress HTTP API: file_get_contents() needs allow_url_fopen, and sent the secret in the URL
+		$result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', [
+			'timeout' => 10,
+			'body'    => [
+				'secret'   => $secret_key,
+				'response' => $response,
+				'remoteip' => ( isset( $_SERVER['REMOTE_ADDR'] ) ) ? $_SERVER['REMOTE_ADDR'] : ''
+			]
+		] );
 
-		$url = "https://www.google.com/recaptcha/api/siteverify?secret={$secret_key}&response={$response}&remoteip={$ip}";
-
-		$response = json_decode( file_get_contents( $url ), TRUE );
+		$response = ( is_wp_error( $result ) ) ? [] : json_decode( wp_remote_retrieve_body( $result ), TRUE );
 
 		if ( empty( $response['success'] ) ) {
 			return self::__( 'The "I am not not a robot" challenge was not completed properly.' );
 		}
 
 		return '';
+	}
+
+	/**
+	 * Whether both reCAPTCHA keys have been entered.
+	 *
+	 * @return bool
+	 */
+	private static function recaptcha_configured() {
+		return self::$config->get( 'antispam_recaptcha_site_key' ) && self::$config->get( 'antispam_recaptcha_secret_key' );
 	}
 
 	/**
