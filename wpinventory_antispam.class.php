@@ -344,11 +344,17 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return self::__( 'Please complete the "I am not a robot" challenge.' );
 		}
 
-		$ip = $_SERVER['REMOTE_ADDR'];
+		// Use the WordPress HTTP API: file_get_contents() needs allow_url_fopen, and sent the secret in the URL
+		$result = wp_remote_post( 'https://www.google.com/recaptcha/api/siteverify', [
+			'timeout' => 10,
+			'body'    => [
+				'secret'   => $secret_key,
+				'response' => $response,
+				'remoteip' => ( isset( $_SERVER['REMOTE_ADDR'] ) ) ? $_SERVER['REMOTE_ADDR'] : ''
+			]
+		] );
 
-		$url = "https://www.google.com/recaptcha/api/siteverify?secret={$secret_key}&response={$response}&remoteip={$ip}";
-
-		$response = json_decode( file_get_contents( $url ), TRUE );
+		$response = ( is_wp_error( $result ) ) ? [] : json_decode( wp_remote_retrieve_body( $result ), TRUE );
 
 		if ( empty( $response['success'] ) ) {
 			return self::__( 'The "I am not not a robot" challenge was not completed properly.' );
