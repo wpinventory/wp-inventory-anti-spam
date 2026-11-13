@@ -228,7 +228,7 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 
 		$recaptcha_site_key = self::$config->get( 'antispam_recaptcha_site_key' );
 
-		if ( ! $recaptcha_site_key ) {
+		if ( ! self::recaptcha_configured() ) {
 			self::_e( 'The reCAPTCHA key has not been configured, therefore CAPTCHA cannot work.' );
 
 			return;
@@ -318,7 +318,18 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return '';
 		}
 
-		$email = self::request( 'wpinventory_reserve_email' );
+		// Nothing to check when the reserve form does not show an Email field
+		$display_email = ( is_array( self::$reserve_args ) && isset( self::$reserve_args['display_email'] ) ) ? self::$reserve_args['display_email'] : self::$config->get( 'reserve_require_email' );
+		if ( ! (int) $display_email ) {
+			return '';
+		}
+
+		$email = trim( (string) self::request( 'wpinventory_reserve_email' ) );
+
+		// An optional Email field left blank is fine. When it is required, the reserve form reports it.
+		if ( '' === $email ) {
+			return '';
+		}
 
 		if ( ! filter_var( $email, FILTER_VALIDATE_EMAIL ) ) {
 			return self::__( 'Email address is not valid.' );
@@ -351,6 +362,11 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 			return '';
 		}
 
+		// Without both keys the challenge is not shown (see recaptcha_field()), so there is nothing to verify.
+		if ( ! self::recaptcha_configured() ) {
+			return '';
+		}
+
 		$secret_key = self::$config->get( 'antispam_recaptcha_secret_key' );
 		$response   = self::request( 'g-recaptcha-response' );
 
@@ -375,6 +391,15 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 		}
 
 		return '';
+	}
+
+	/**
+	 * Whether both reCAPTCHA keys have been entered.
+	 *
+	 * @return bool
+	 */
+	private static function recaptcha_configured() {
+		return self::$config->get( 'antispam_recaptcha_site_key' ) && self::$config->get( 'antispam_recaptcha_secret_key' );
 	}
 
 	/**
