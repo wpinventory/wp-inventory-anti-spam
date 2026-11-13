@@ -45,6 +45,13 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	private static $item_key = 'anti_spam';
 
 	/**
+	 * The anti-spam result for this request, once checked.
+	 *
+	 * @var null|string
+	 */
+	private static $form_errors = NULL;
+
+	/**
 	 * Set everything up.
 	 */
 	public static function initialize() {
@@ -258,15 +265,22 @@ Class WPIMAntiSpam extends WPIMAntiSpamCore {
 	 * @return string
 	 */
 	public static function wpim_reserve_form_errors( $form_errors ) {
-		$errors   = [];
-		$errors[] = self::nonce_validate();
-		$errors[] = self::email_validate();
-		$errors[] = self::honeypot_validate();
-		$errors[] = self::recaptcha_validate();
-		$errors[] = self::max_links_validate();
-		$errors[] = self::max_domains_validate();
+		// Reserve Cart applies this filter once for the form and again for every cart item.
+		// The checks are about the submitted form, so run them once: a reCAPTCHA token can only
+		// be verified once, and Google answers "timeout-or-duplicate" to the second attempt.
+		if ( NULL === self::$form_errors ) {
+			$errors   = [];
+			$errors[] = self::nonce_validate();
+			$errors[] = self::email_validate();
+			$errors[] = self::honeypot_validate();
+			$errors[] = self::recaptcha_validate();
+			$errors[] = self::max_links_validate();
+			$errors[] = self::max_domains_validate();
 
-		$errors = implode( '<br>', array_filter( $errors ) );
+			self::$form_errors = implode( '<br>', array_filter( $errors ) );
+		}
+
+		$errors = self::$form_errors;
 
 		if ( $form_errors && $errors ) {
 			$form_errors .= '<br>';
